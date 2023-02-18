@@ -13,7 +13,7 @@ import {
   OWN_POSTION_MARKER_ID,
 } from './types';
 import { LatLng } from 'react-leaflet';
-import { NativeSyntheticEvent, Platform, StyleSheet } from 'react-native';
+import { NativeSyntheticEvent, StyleSheet } from 'react-native';
 import {
   WebViewError,
   WebViewMessageEvent,
@@ -21,20 +21,23 @@ import {
 import LoadingIndicator from '../LoadingIndicator';
 
 const LEAFLET_HTML_SOURCE = () => {
-  const [index, indexLoadingError] = useAssets(
+  const [index] = useAssets(
     require('../../android/src/main/assets/leaflet.html')
   );
 
   const [html, setHtml] = useState('');
 
   if (index) {
-    readAsStringAsync(index[0].localUri).then((data) => {
+    readAsStringAsync(index[0].localUri as string).then((data) => {
       setHtml(data);
     });
   }
 
   return html;
 };
+
+const LEAFLET_HTML_SOURCE_UNKNOWN = LEAFLET_HTML_SOURCE as unknown;
+const LEAFLET_HTML_SOURCE_STRING = LEAFLET_HTML_SOURCE_UNKNOWN as string;
 
 const DEFAULT_MAP_LAYERS = [
   {
@@ -193,9 +196,9 @@ const LeafletView: React.FC<LeafletViewProps> = ({
       return;
     }
     sendMessage({
-	  ...ownPositionMarker,
-	  id: OWN_POSTION_MARKER_ID
-	});
+      ...ownPositionMarker,
+      id: OWN_POSTION_MARKER_ID,
+    });
   }, [initialized, ownPositionMarker, sendMessage]);
 
   //Handle mapCenterPosition update
@@ -227,7 +230,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
       onError={onError}
       originWhitelist={['*']}
       renderLoading={renderLoading}
-      source={{ html: LEAFLET_HTML_SOURCE }}
+      source={{ html: LEAFLET_HTML_SOURCE_STRING }}
       allowFileAccess={true}
       allowUniversalAccessFromFileURLs={true}
       allowFileAccessFromFileURLs={true}

@@ -113,6 +113,7 @@ export interface MapShape {
 }
 
 export interface MapMessage {
+  id?: any;
   mapLayers?: MapLayer[];
   mapMarkers?: MapMarker[];
   mapShapes?: MapShape[];
