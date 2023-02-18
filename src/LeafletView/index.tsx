@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
+import { readAsStringAsync } from 'expo-file-system';
+import { useAssets } from 'expo-asset';
 import {
   MapMarker,
   WebviewLeafletMessage,
@@ -18,10 +20,21 @@ import {
 } from 'react-native-webview/lib/WebViewTypes';
 import LoadingIndicator from '../LoadingIndicator';
 
-const LEAFLET_HTML_SOURCE = Platform.select({
-  ios: require('../../android/src/main/assets/leaflet.html'),
-  android: { uri: 'file:///android_asset/leaflet.html' },
-});
+const LEAFLET_HTML_SOURCE = () => {
+  const [index, indexLoadingError] = useAssets(
+    require('../../android/src/main/assets/leaflet.html')
+  );
+
+  const [html, setHtml] = useState('');
+
+  if (index) {
+    readAsStringAsync(index[0].localUri).then((data) => {
+      setHtml(data);
+    });
+  }
+
+  return html;
+};
 
 const DEFAULT_MAP_LAYERS = [
   {
@@ -214,7 +227,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
       onError={onError}
       originWhitelist={['*']}
       renderLoading={renderLoading}
-      source={LEAFLET_HTML_SOURCE}
+      source={{ html: LEAFLET_HTML_SOURCE }}
       allowFileAccess={true}
       allowUniversalAccessFromFileURLs={true}
       allowFileAccessFromFileURLs={true}
