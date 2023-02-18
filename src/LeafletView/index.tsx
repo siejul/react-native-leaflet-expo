@@ -36,9 +36,6 @@ const LEAFLET_HTML_SOURCE = () => {
   return html;
 };
 
-const LEAFLET_HTML_SOURCE_UNKNOWN = LEAFLET_HTML_SOURCE as unknown;
-const LEAFLET_HTML_SOURCE_STRING = LEAFLET_HTML_SOURCE_UNKNOWN as string;
-
 const DEFAULT_MAP_LAYERS = [
   {
     attribution:
@@ -230,7 +227,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
       onError={onError}
       originWhitelist={['*']}
       renderLoading={renderLoading}
-      source={{ html: LEAFLET_HTML_SOURCE_STRING }}
+      source={{ html: LEAFLET_HTML_SOURCE() }}
       allowFileAccess={true}
       allowUniversalAccessFromFileURLs={true}
       allowFileAccessFromFileURLs={true}
