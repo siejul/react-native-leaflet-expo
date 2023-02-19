@@ -11,7 +11,7 @@ package.json:
 ```
 {
   "dependencies": {
-    "react-native-leaflet-view": "git://github.com/lichtmetzger/react-native-leaflet-expo.git",
+    "react-native-leaflet-view": "lichtmetzger/react-native-leaflet-expo",
     ...
 }
 ```
